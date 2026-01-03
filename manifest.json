@@ -1,14 +1,14 @@
 {
-  "name": "Pann404 Cyber-Crate",
+  "name": "TikStalk Punn404",
   "short_name": "Pann404",
-  "description": "Mystery Box & TikTok Downloader by Pann404",
+  "description": "TikTok Stalker by Pann404",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#050a10",
   "theme_color": "#00d0ff",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/1154/1154874.png",
+      "src": "https://i.ibb.co/60pqGtYz/f0bdf501057c441023536c808323cdf7.png",
       "sizes": "512x512",
       "type": "image/png"
     }
