@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STALKING BY PUNN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon: #00f3ff; --bg: #02050a; --wa: #25d366; --red: #ff3131; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 120px 0 0 0; overflow-x: hidden; }
+        
+        /* NAVBAR & ADS */
+        .navbar { position: fixed; top: 0; width: 100%; background: rgba(5, 10, 20, 0.98); border-bottom: 1px solid var(--neon); display: flex; justify-content: center; gap: 20px; padding: 12px 0; z-index: 1000; backdrop-filter: blur(10px); }
+        .nav-link { color: #fff; text-decoration: none; font-family: 'Orbitron'; font-size: 10px; letter-spacing: 1px; transition: 0.3s; padding: 5px 10px; }
+        .nav-link:hover { color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+        .ads-slider { position: fixed; top: 45px; width: 100%; background: rgba(0,243,255,0.05); border-bottom: 1px solid rgba(0,243,255,0.3); overflow: hidden; padding: 6px 0; z-index: 999; }
+        .ads-content { display: inline-block; animation: ticker 15s linear infinite; font-family: 'Orbitron'; font-size: 10px; color: var(--neon); white-space: nowrap; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* NOTIFICATION */
+        #noti-container { position: fixed; top: 85px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .noti { background: rgba(5, 10, 20, 0.95); border-left: 4px solid var(--neon); color: #fff; padding: 12px 20px; font-family: 'Orbitron'; font-size: 10px; min-width: 200px; box-shadow: 0 0 15px rgba(0,243,255,0.2); animation: slideIn 0.3s ease-out; border-radius: 2px; transition: 0.5s; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* CONTENT PANELS */
+        .panel, .rules-panel { width: 320px; background: rgba(5,10,20,0.9); border: 1px solid var(--neon); padding: 25px 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,243,255,0.3); backdrop-filter: blur(5px); margin-bottom: 40px; box-sizing: border-box; text-align: center; }
+        .header-logo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon); margin-bottom: 15px; }
+        input { width: 100%; background: none; border: none; border-bottom: 2px solid var(--neon); padding: 8px; color: #fff; font-family: 'Orbitron'; font-size: 13px; outline: none; text-align: center; margin-bottom: 15px; }
+        .btn-main { width: 100%; padding: 12px; background: none; border: 1px solid var(--neon); color: var(--neon); font-family: 'Orbitron'; cursor: pointer; font-size: 11px; font-weight: bold; margin-bottom: 10px; transition: 0.3s; }
+        .btn-main:hover { background: var(--neon); color: #000; }
+        
+        #result { display: none; margin-top: 20px; text-align: left; animation: fadeIn 0.5s; }
+        .res-head { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .res-pfp { width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--neon); }
+        .res-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-item { background: rgba(0,243,255,0.05); padding: 8px; border-radius: 4px; font-size: 10px; }
+        .stat-item b { display: block; color: var(--neon); font-size: 12px; }
+
+        .btn-wa-trigger { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 1px solid var(--wa); color: var(--wa); cursor: pointer; font-size: 11px; font-family: 'Orbitron'; }
+
+        /* FOOTER SYSTEM */
+        .main-footer { width: 100%; background: rgba(5, 10, 20, 0.95); border-top: 1px solid var(--neon); padding: 30px 0; margin-top: 50px; text-align: center; }
+        .footer-brand { color: var(--neon); font-family: 'Orbitron'; font-size: 14px; text-shadow: 0 0 10px var(--neon); margin-bottom: 5px; }
+        .footer-copyright { color: #444; font-size: 9px; font-family: 'Orbitron'; }
+
+        /* MUSIC */
+        .music-container { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .music-label { font-family: 'Orbitron'; font-size: 8px; color: var(--neon); background: rgba(0,0,0,0.8); padding: 4px 10px; border: 1px solid var(--neon); border-radius: 4px; }
+        .music-btn { width: 50px; height: 50px; border-radius: 50%; background: #000; border: 2px solid var(--neon); color: var(--neon); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal-box { width: 280px; background: #0a0505; border: 2px solid var(--wa); padding: 25px; text-align: center; border-radius: 10px; }
+        .wa-opt { display: block; padding: 12px; font-family: 'Orbitron'; font-size: 11px; border: 1px solid var(--wa); color: #fff; text-decoration: none; margin-bottom: 10px; }
+    </style>
+</head>
+<body onclick="initAudio()">
+
+<nav class="navbar">
+    <a href="#home-section" class="nav-link">HOME</a>
+    <a href="#" class="nav-link" onclick="toggleModal('waModal', true); return false;">ADMIN</a>
+    <a href="#rules-section" class="nav-link">RULES</a>
+</nav>
+
+<div class="ads-slider">
+    <div class="ads-content">STALKING TIKTOK BY PUNN - JASA BOOSTER READY - CONTACT VIA WA - POWERED BY PuunnAj</div>
+</div>
+
+<div id="noti-container"></div>
+
+<div class="panel" id="home-section">
+    <img src="https://i.ibb.co/60pqGtYz/f0bdf501057c441023536c808323cdf7.png" alt="Logo" class="header-logo">
+    <h1>STALKING BY PUNN</h1>
+    <input type="text" id="user" placeholder="username_target">
+    <button class="btn-main" id="scanBtn" onclick="checkCooldown()">RUN SCANNER</button>
+    
+    <div id="result">
+        <div class="res-head">
+            <img id="res-avatar" class="res-pfp">
+            <div id="res-nick" style="color:var(--neon); font-weight:bold;"></div>
+        </div>
+        <div class="res-stats">
+            <div class="stat-item">Followers <b id="res-foll">0</b></div>
+            <div class="stat-item">Following <b id="res-foli">0</b></div>
+            <div class="stat-item">Likes <b id="res-like">0</b></div>
+            <div class="stat-item">Videos <b id="res-vids">0</b></div>
+        </div>
+    </div>
+
+    <div style="margin-top:20px;" class="btn-wa-trigger" onclick="toggleModal('waModal', true)">
+        <i class="fab fa-whatsapp"></i> CONTACT ADMIN
+    </div>
+</div>
+
+<div class="rules-panel" id="rules-section">
+    <h3 style="color:var(--red);">SYSTEM RULES</h3>
+    <div style="font-size:11px; color:#ccc; line-height:1.6; text-align:left;">
+        > Jeda scan 5 menit.<br>
+        > Dilarang spam API.<br>
+        > Input username tanpa @.
+    </div>
+</div>
+
+<footer class="main-footer">
+    <div class="footer-brand">STALKING BY PUNN</div>
+    <div class="footer-copyright">&copy; 2024 PuunnAj. ALL RIGHTS RESERVED.</div>
+</footer>
+
+<div class="music-container">
+    <div class="music-label">SONG: AJENG FEBRIA</div>
+    <button class="music-btn" id="musicBtn" onclick="toggleMusic()"><i class="fas fa-play"></i></button>
+</div>
+
+<div class="modal-overlay" id="waModal">
+    <div class="modal-box">
+        <h2 style="color:var(--wa); font-size:12px; margin-bottom:15px;">SELECT ADMIN</h2>
+        <a href="https://wa.me/6283896168449" class="wa-opt">ADMIN 1</a>
+        <button onclick="toggleModal('waModal', false)" style="background:none; border:none; color:#555; font-size:9px; cursor:pointer;">[ CLOSE ]</button>
+    </div>
+</div>
+
+<script>
+    const BGM_URL = "https://files.catbox.moe/ige79n"; 
+    const CLICK_URL = "https://cihuyyyaudiopunn.edgeone.app/AUD-20260101-WA0067.mp3";
+    let bgMusic = new Audio(BGM_URL);
+    let clickSfx = new Audio(CLICK_URL);
+    bgMusic.loop = true;
+    let audioReady = false;
+
+    function initAudio() { if(!audioReady) { clickSfx.play().then(() => { clickSfx.pause(); clickSfx.currentTime=0; }); audioReady=true; } }
+    function playClick() { if(audioReady) { clickSfx.currentTime=0; clickSfx.play().catch(()=>{}); } }
+    function notify(txt, type='default') {
+        const c = document.getElementById('noti-container');
+        const n = document.createElement('div');
+        n.className = `noti ${type}`; n.innerHTML = txt; c.appendChild(n);
+        setTimeout(() => { n.style.opacity='0'; setTimeout(()=>n.remove(),500); }, 3000);
+    }
+
+    function toggleModal(id, s) { playClick(); document.getElementById(id).style.display = s?'flex':'none'; }
+    function toggleMusic() {
+        playClick();
+        const btn = document.getElementById('musicBtn').querySelector('i');
+        if(bgMusic.paused) { bgMusic.play(); btn.className='fas fa-pause'; notify("Playing Ajeng Febria", "success"); }
+        else { bgMusic.pause(); btn.className='fas fa-play'; notify("Music Paused"); }
+    }
+
+    async function scanUser() {
+        const u = document.getElementById('user').value.trim();
+        const btn = document.getElementById('scanBtn');
+        btn.innerText = "SEARCHING...";
+        try {
+            const res = await fetch(`https://www.tikwm.com/api/user/info?unique_id=${u}`);
+            const json = await res.json();
+            if(json.code === 0) {
+                const d = json.data.user; const s = json.data.stats;
+                document.getElementById('res-avatar').src = d.avatarThumb;
+                document.getElementById('res-nick').innerText = d.nickname;
+                document.getElementById('res-foll').innerText = s.followerCount.toLocaleString();
+                document.getElementById('res-foli').innerText = s.followingCount.toLocaleString();
+                document.getElementById('res-like').innerText = s.heartCount.toLocaleString();
+                document.getElementById('res-vids').innerText = s.videoCount.toLocaleString();
+                document.getElementById('result').style.display = 'block';
+                notify("Target Found!", "success");
+                localStorage.setItem('lastPunnScan', Date.now());
+            } else { notify("User tidak ditemukan!", "error"); }
+        } catch(e) { notify("API Error!", "error"); }
+        finally { btn.innerText = "RUN SCANNER"; }
+    }
+
+    function checkCooldown() {
+        playClick();
+        const last = localStorage.getItem('lastPunnScan');
+        const now = Date.now();
+        if (last && (now - last < 300000)) {
+            notify("Cooldown aktif!", "error");
+        } else {
+            if(!document.getElementById('user').value) return notify("Input username!", "error");
+            scanUser();
+        }
+    }
+</script>
+</body>
+</html>
